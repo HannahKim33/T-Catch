@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 
 @Service
-public class SearchService {
+public class Search {
 
     public HashMap<String, Object> searchProcess(String category, HttpSession session, String keyword,
                                                  String searchColumn, String tableName){

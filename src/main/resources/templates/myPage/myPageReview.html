@@ -90,7 +90,7 @@
 <!--                <div><span th:text="${r.customer.custid}"></span></div>-->
 <!--                <div><span th:text="${r.ticket.ticketid}"></span></div>-->
                 <div><span th:text="${r.ticket_name}"></span></div>
-                <div><span th:text="${r.ticket_date}"></span></div>
+                <div><span th:text="${#strings.substring(r.ticket_date, 0, 16)}"></span></div>
                 <div>
                     <span th:each="i: ${#numbers.sequence(1, r.score)}">⭐</span>
                 </div>

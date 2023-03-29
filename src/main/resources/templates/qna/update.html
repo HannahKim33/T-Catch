@@ -79,7 +79,7 @@
     <br>
     <span class="title_insert">제목&nbsp;&nbsp;&nbsp;
       <input name="qna_title" th:value="${q.qna_title}" required id="insert_title"></span>
-    <span class="title_insert" id="select_qna">작품선택&nbsp;&nbsp;&nbsp;</span>
+    <span class="title_insert" id="select_qna">작품&nbsp;&nbsp;&nbsp;</span>
     <select name="ticketid" id="select_ticket" required class="insert_select">
       <option value="0">해당 없음</option>
       <option th:each="ticketVO:${ticketVOList}"

@@ -3,7 +3,8 @@ package com.example.finalpro.controller;
 import com.example.finalpro.db.DBManager;
 import com.example.finalpro.entity.Notice;
 import com.example.finalpro.service.NoticeService;
-import com.example.finalpro.service.SearchService;
+import com.example.finalpro.service.Search;
+import com.example.finalpro.util.Page;
 import com.example.finalpro.vo.NoticeVO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -31,7 +32,7 @@ public class NoticeController {
     private NoticeService ns;
 
     @Autowired
-    private SearchService searchService;
+    private Search search;
 
     @GetMapping("/notice/resetSearch")
     public ModelAndView resetSearch(HttpSession session){
@@ -48,32 +49,29 @@ public class NoticeController {
         ModelAndView mav=new ModelAndView("/notice/list");
 
         //쿼리문에 넣을 변수들을 담을 맵 생성
-        HashMap<String, Object> hashMap= searchService.searchProcess(category, session, keyword,
+        HashMap<String, Object> hashMap= search.searchProcess(category, session, keyword,
                 searchColumn, "notice");
         
         // 페이징
         if (pageNum==null){
             pageNum=1;
         }
-        int totalRecord=DBManager.getTotalNoticeRecord(hashMap);
-        int pageSize=10;
-        int totalPage=(int)Math.ceil((double)totalRecord/pageSize);
+
+        Page page=new Page(DBManager.getTotalNoticeRecord(hashMap),10,5,pageNum);
+
+        int totalPage=page.getTotalPage();
         if(totalPage==0){
             totalPage=1;
         }
         mav.addObject("totalPage",totalPage);
         
         // 해당 페이지의 시작 글번호, 끝 글번호
-        int startNo=(pageNum-1)*pageSize+1;
-        int endNo=pageNum*pageSize;
-        hashMap.put("startNo",startNo);
-        hashMap.put("endNo",endNo);
+        hashMap.put("startNo",page.getStartNo());
+        hashMap.put("endNo",page.getEndNo());
 
-        // 페이지를 페이징
-        int pageGroupSize=5;   // 한 페이지 당 페이지 번호 몇 개씩 출력할지
-
-        int firstPage=((pageNum-1)/pageGroupSize)*pageGroupSize+1;
-        int lastPage=firstPage+pageGroupSize-1;
+        // 해당 페이지에서 보여줄 페이지 번호 첫 번째와 마지막
+        int firstPage=page.getFirstPage();
+        int lastPage=page.getLastPage();
         if(lastPage>totalPage){
             lastPage=totalPage;
         }

@@ -1363,7 +1363,7 @@ h2{
     position : relative;
     border : 2px solid #08428C;
     background-color : #efefef;
-    width : 150px; height : 25px;
+    width : 300px; height : 25px;
 }
 .insert_select{
     border : 2px solid #08428C;
@@ -1409,7 +1409,7 @@ h2{
     font-size : 15px;
 }
 #select_qna{
-    margin-left : 120px;
+    /*margin-left : 10px;*/
 }
 #select_category{
     margin-left : -40px;
