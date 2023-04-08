@@ -1,6 +1,6 @@
 # DoItCoding_Final
 
-### 👥 멤버구성
+## 👥 멤버구성
  - 김고운
  - 신윤경
  - 이명진
@@ -9,7 +9,7 @@
  - 황은선
 <hr>
 
-### ⚙️ 개발환경
+## ⚙️ 개발환경
  - java 17
  - DataBase : ORACLE
  - ORM : MyBatis, JPA
@@ -17,19 +17,19 @@
 
 <hr>
 
-### 🌊 서비스 흐름도
+## 🌊 서비스 흐름도
 
 <img width="950" alt="image" src="https://user-images.githubusercontent.com/97737386/229759345-d6083d7b-17ca-4515-bfa6-0e26533c5371.png">
 
 <hr>
 
-### DB ER 다이어 그램
+## DB ER 다이어그램
 
 <img width="425" alt="image" src="https://user-images.githubusercontent.com/49307938/223933230-ee8d8a15-c7ec-481f-99f0-2ce9decdf12b.png">
 
 <hr>
 
-### 📝 프로젝트 기록 (김고운)
+## 📝 프로젝트 기록 (김고운)
 - 2/19-2/20
   - Notice와 QNA의 list/detail 조회 기능 완성
 - 2/21
@@ -78,6 +78,87 @@
   - 포스터 이미지, 버튼, a태그 CSS 적용
   - 답변 알림, 리뷰 불러오기 오류 수정
 
+## 오류와 해결 (김고운)
+
+### 1. @ResponseBody
+
+```java
+@GetMapping("/qna/updateAnswer")
+  public String insertAnswer(int qna_no, String qna_answer){
+      QnaVO q=new QnaVO();
+      q.setQna_no(qna_no);
+      q.setQna_answer(qna_answer);
+      return ""+DBManager.updateAnswer(q);
+  }
+```
+
+@ResponseBody 를 붙이지 않아서 template[1]을 찾을 수 없다는 에러 뜸. 리턴 값이 1이라서 1이라는 이름의 템플릿을 찾은 듯함
+
+### 2. Security 403 forbidden error
+
+⇒ Security 사용할 경우 form에 토큰 추가해야 함 (DB modify할 때)
+
+```html
+<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+```
+
+### 3. sqlSessionFactory가 null일 경우
+
+```xml
+Cannot invoke "org.apache.ibatis.session.SqlSessionFactory.openSession()" because "com.example.finalpro.db.DBManager.sqlSessionFactory" is null] with root cause
+```
+
+mapper 파일 문제. xml태그 위치가 잘못됐거나  xxxMapper.xml 파일을 Configuration 파일에 연결 안했거나 Configuration 파일에 mapper resource가 중복되었거나 alias 잘못 적었거나 mapper 파일 내 중복되는 id가 있거나 등등…. 
+
+mapper 파일 내에 
+
+```xml
+<<<<<<<<< Temporary merge branch 1
+```
+
+이런 깃 충돌 메시지가 남아 있어서 매핑 오류나기도 함
+
+### 4. Controller Mapping 오류
+
+```xml
+Error creating bean with name 'org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration': Unsatisfied dependency expressed through method 'setFilterChains' parameter 0: Error creating bean with name 'filterChain' defined in class path resource [com/example/finalpro/SecurityConfig.class]: Failed to instantiate [org.springframework.security.web.SecurityFilterChain]: Factory method 'filterChain' threw exception with message: Error creating bean with name 'mvcHandlerMappingIntrospector' defined in class path resource [org/springframework/boot/autoconfigure/web/servlet/WebMvcAutoConfiguration$EnableWebMvcConfiguration.class]: Error creating bean with name 'requestMappingHandlerMapping' defined in class path resource [org/springframework/boot/autoconfigure/web/servlet/WebMvcAutoConfiguration$EnableWebMvcConfiguration.class]: Ambiguous mapping. Cannot map 'ticketController' method 
+com.example.finalpro.controller.TicketController#main()
+to {GET [/main]}: There is already 'customerController' bean method
+com.example.finalpro.controller.CustomerController#main(HttpSession, Model) mapped.
+```
+
+@Getmapping(”/main”) 이 두 controller에 존재함. 한 uri당 하나만 매핑되어야 한다.
+
+### 5. form 안에 있는 button을 누르면 자동으로 form이 submit 되는 문제
+
+button을 <button> 말고 <input type=”button”>으로 만들면 해결됨
+
+
+### 6. Mybatis Mapper SQL에서 칼럼 이름을 변수로 지정할 경우
+
+```
+${변수}
+<!--예: order by ${칼럼이름}-->
+```
+
+값을 받아올 경우와는 달리 #{}가 아님을 주의!! 
+
+
+
+### 7.pom.xml에 dependency 추가했을 때 프로젝트 reload를 해줘야 dependency를 인식한다.
+
+reload 방법: 오른쪽 Maven 탭→프로젝트이름→reload project
+
+### 8. service 객체가 null인 경우
+```
+Cannot invoke "com.example.finalpro.service.TicketService.findByTicketid(int)" because "this.ts" is null
+```
+→ @Autowired 빼먹음
+
+
+### 9. Controller에서 Ajax 작성할 때 메소드 리턴타입을 void로 하면 안됨 (→무한루프)
+<br>
+<br>
 ### 📝 프로젝트 기록(조영민)
 
 - **2/15**
