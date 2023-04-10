@@ -20,7 +20,11 @@ public class Page {
 //    int startNo, endNo, firstPage, lastPage;
 
     public int getTotalPage(){
-        return (int)Math.ceil((double)totalRecord/pageSize);
+        int totalPage=(int)Math.ceil((double)totalRecord/pageSize);
+        if(totalPage==0){
+            totalPage=1;
+        }
+        return totalPage;
     }
     public int getStartNo(){
         return (pageNum-1)*pageSize+1;
@@ -35,7 +39,11 @@ public class Page {
     }
 
     public int getLastPage(){
-        return ((pageNum-1)/pageGroupSize)*pageGroupSize+pageGroupSize;
+        int lastPage=((pageNum-1)/pageGroupSize)*pageGroupSize+pageGroupSize;
+        if(lastPage>getTotalPage()){
+            lastPage=getTotalPage();
+        }
+        return lastPage;
     }
 
 }

@@ -6,6 +6,7 @@ import com.example.finalpro.entity.MyPageReview;
 import com.example.finalpro.service.CustomerService;
 import com.example.finalpro.service.ReviewService;
 import com.example.finalpro.service.TicketService;
+import com.example.finalpro.util.Page;
 import com.example.finalpro.vo.ReviewVO;
 import jakarta.servlet.http.HttpSession;
 import lombok.Setter;
@@ -43,31 +44,18 @@ public class MyPageReviewController {
         String loginId=(String) session.getAttribute("id");
         Customer loginCustomer=cs.findByCustid(loginId);
         List<MyPageReview> list=rs.findByCustid(loginCustomer);
-        int totalRecord=list.size();
-        int pageSize=3;
-        int totalPage=(int)Math.ceil(totalRecord/(double)pageSize);
-        if(totalPage==0){
-            totalPage=1;
-        }
-        int firstRecord=(pageNum-1)*pageSize+1;
-        int lastRecord=pageNum*pageSize;
+
+        Page page=new Page(list.size(),3,5,pageNum);
+
         HashMap<String, Object> map=new HashMap<String, Object>();
-        map.put("firstRecord",firstRecord);
-        map.put("lastRecord",lastRecord);
+        map.put("firstRecord",page.getStartNo());
+        map.put("lastRecord",page.getEndNo());
         map.put("custid",loginId);
 
-        // 페이지를 페이징
-        int pageGroupSize=5;   // 한 페이지 당 페이지 번호 몇 개씩 출력할지
+        mav.addObject("firstPage",page.getFirstPage());
+        mav.addObject("lastPage",page.getLastPage());
 
-        int firstPage=((pageNum-1)/pageGroupSize)*pageGroupSize+1;
-        int lastPage=firstPage+pageGroupSize-1;
-        if(lastPage>totalPage){
-            lastPage=totalPage;
-        }
-        mav.addObject("firstPage",firstPage);
-        mav.addObject("lastPage",lastPage);
-
-        mav.addObject("totalPage",totalPage);
+        mav.addObject("totalPage",page.getTotalPage());
         mav.addObject("list",DBManager.listReviewByCustid(map));
         return mav;
     }
