@@ -70,9 +70,7 @@ public class NoticeController {
         // 해당 페이지에서 보여줄 페이지 번호 첫 번째와 마지막
         int firstPage=page.getFirstPage();
         int lastPage=page.getLastPage();
-        if(lastPage>totalPage){
-            lastPage=totalPage;
-        }
+
         mav.addObject("firstPage",firstPage);
         mav.addObject("lastPage",lastPage);
         List<NoticeVO> list=DBManager.findAllNotice(hashMap);
