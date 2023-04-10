@@ -16,21 +16,21 @@
 
 ## ⚙️ 개발 환경
 - Back-end
- - Java 17
- - SpringBoot 3.0
- - Oracle 21c
- - JavaScript & Jquery
- - MyBatis & Spring JPA
- - Maven
- - Lombok
- - Spring Security
- - Tomcat 9.0
+  - Java 17
+  - SpringBoot 3.0
+  - Oracle 21c
+  - JavaScript & Jquery
+  - MyBatis & Spring JPA
+  - Maven
+  - Lombok
+  - Spring Security
+  - Tomcat 9.0
  
 - Front-end
- - HTML5
- - Thymeleaf
- - JavaScript
- - Jquery
+  - HTML5
+  - Thymeleaf
+  - JavaScript
+  - Jquery
 
 
 <hr>
