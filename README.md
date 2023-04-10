@@ -1,6 +1,6 @@
 # T-CATCH
 
-## 핵심 기능
+## 🔎 핵심 기능
 
 - 티켓 예매 웹사이트
 - 공연 리뷰 작성
@@ -100,22 +100,54 @@
 
 ## 핵심 트러블슈팅
 
-## 그 외 트러블슈팅
 <details>
-<summary><h3>Ajax 호출 오류</h3>(cannot find template)</summary>
+<summary><h4>알림 기능을 위한 테이블 추가</h4></summary>
 
-```java
-@GetMapping("/qna/updateAnswer")
-  public String insertAnswer(int qna_no, String qna_answer){
-      QnaVO q=new QnaVO();
-      q.setQna_no(qna_no);
-      q.setQna_answer(qna_answer);
-      return ""+DBManager.updateAnswer(q);
-  }
-```
+저희가 작성한 요구사항 중 하나는 Q&A에 답변이 달릴 시 사용자에게 알림을 띄우는 것이었습니다.
 
-@ResponseBody 를 붙이지 않아서 template[1]을 찾을 수 없다는 에러 뜸. 리턴 값이 1이라서 1이라는 이름의 템플릿을 찾은 듯함
+그러나 Q&A 테이블만을 이용해서는 알림 기능을 완성할 수 없다는 것을 깨달았습니다.
+
+그래서 notification 테이블을 추가해 알림 생성, 읽음 표시, 삭제, 알림 갯수 출력 등이 가능하게 만들었습니다.
+
+notification 테이블은 qna 테이블과 customer 테이블의 기본키를 참조합니다.
+ 
 </details>
+
+<details>
+
+ <summary><h4>중복 코드 제거를 위한 모듈화</h4></summary>
+ 
+ 페이징 기능 모듈화
+ 
+ 제가 맡은 리뷰, 공지사항, Q&A는 모두 페이징 기능이 들어가 있습니다. 페이징을 위해 중복되는 코드가 세 번 반복되는 문제가 있었습니다.
+ 
+ 그래서 Page라는 Java Class를 만들어 이 클래스를 세 컨트롤러에서 사용해 유지보수성과 효율성을 높였습니다. 
+ 
+ 코드 확
+ 
+ 
+</details>
+
+
+
+
+<details>
+ <summary><h2>그 외 트러블슈팅</h2></summary>
+ <details>
+ <summary><h3>Ajax 호출 오류</h3>(cannot find template)</summary>
+
+ ```java
+ @GetMapping("/qna/updateAnswer")
+   public String insertAnswer(int qna_no, String qna_answer){
+       QnaVO q=new QnaVO();
+       q.setQna_no(qna_no);
+       q.setQna_answer(qna_answer);
+       return ""+DBManager.updateAnswer(q);
+   }
+ ```
+
+ @ResponseBody 를 붙이지 않아서 template[1]을 찾을 수 없다는 에러 뜸. 리턴 값이 1이라서 1이라는 이름의 템플릿을 찾은 듯함
+ </details>
 
 <details>
 <summary><h3>Security 403 forbidden error</h3></summary>
@@ -197,5 +229,4 @@ Cannot invoke "com.example.finalpro.service.TicketService.findByTicketid(int)" b
 <summary><h3>Ajax 실행 시 무한루프</h3></summary>
 Controller에서 Ajax 작성할 때 메소드 리턴타입을 void로 하면 무한루프가 생길 수 있다.
 </details>
-<br>
-<br>
+</details>
