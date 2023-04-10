@@ -123,7 +123,7 @@ notification 테이블은 qna 테이블과 customer 테이블의 기본키를 �
  
  그래서 Page라는 Java Class를 만들어 이 클래스를 세 컨트롤러에서 사용해 유지보수성과 효율성을 높였습니다. 
  
- 코드 확
+ [개선된 코드](https://github.com/HannahKim33/T-Catch/blob/3b9300145d180ca998e713891c7e54a6d9911a56/src/main/java/com/example/finalpro/controller/NoticeController.java#L60-L79)
  
  
 </details>
