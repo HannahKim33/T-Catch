@@ -1,4 +1,4 @@
-# DoItCoding_Final
+# T-CATCH
 
 ## 👥 멤버구성
  - 김고운
@@ -10,10 +10,15 @@
 <hr>
 
 ## ⚙️ 개발환경
- - java 17
- - DataBase : ORACLE
- - ORM : MyBatis, JPA
+ - Back-end : Java 17, JavaScript, JQuery
  - Framework : SpringBoot(3.0)
+ - DBMS : Oracle 21c
+ - ORM : MyBatis, JPA
+ - Front-end : HTML5, Thymeleaf, JavaScript, Jquery
+ - Build Tool : Maven
+ - Library/Dependency : Lombok, Spring Security, etc
+ - WAS : Tomcat 9.0
+
 
 <hr>
 
