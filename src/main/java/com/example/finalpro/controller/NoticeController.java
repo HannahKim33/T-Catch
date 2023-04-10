@@ -60,9 +60,7 @@ public class NoticeController {
         Page page=new Page(DBManager.getTotalNoticeRecord(hashMap),10,5,pageNum);
 
         int totalPage=page.getTotalPage();
-        if(totalPage==0){
-            totalPage=1;
-        }
+
         mav.addObject("totalPage",totalPage);
         
         // 해당 페이지의 시작 글번호, 끝 글번호

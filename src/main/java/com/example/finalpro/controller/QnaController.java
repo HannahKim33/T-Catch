@@ -71,9 +71,7 @@ public class QnaController {
         Page page=new Page(DBManager.getTotalQnaRecord(hashMap),10,5,pageNum);
 
         int totalPage=page.getTotalPage();
-        if(totalPage==0){
-            totalPage=1;
-        }
+
         mav.addObject("totalPage",totalPage);
 
         // 해당 페이지의 시작 글번호, 끝 글번호
@@ -99,7 +97,7 @@ public class QnaController {
     }
 
     @GetMapping("/qna/detail/{qna_no}")
-    public ModelAndView detail(@PathVariable int qna_no, HttpSession session){
+    public ModelAndView detail(@PathVariable int qna_no){
         ModelAndView mav=new ModelAndView("/qna/detail");
         Optional<Qna> optionalQna=qs.findById(qna_no);
         if(optionalQna.isPresent()){
@@ -148,7 +146,7 @@ public class QnaController {
         // 세션에 저장된 아이디로 유저가 예매한 티켓 VO 목록 가져오기
         String loginId=(String)session.getAttribute("id");
         List<Integer> ticketidList=DBManager.findTicketidByCustid(loginId);
-        List<Ticket> ticketVOList=new ArrayList<Ticket>();
+        List<Ticket> ticketVOList=new ArrayList<>();
         for(int ticketid:ticketidList){
             Optional<Ticket> optionalTicket=ts.findByTicketid(ticketid);
             if(optionalTicket.isPresent()) {
@@ -195,7 +193,7 @@ public class QnaController {
     }
 
     @GetMapping("/qna/update/{qna_no}")
-    public ModelAndView updateForm(@PathVariable int qna_no, HttpSession session){
+    public ModelAndView updateForm(@PathVariable int qna_no){
         ModelAndView mav=new ModelAndView("/qna/update");
         Optional<Qna> optionalQna=qs.findById(qna_no);
         if(optionalQna.isPresent()) {
@@ -206,7 +204,7 @@ public class QnaController {
             // 작성자 아이디
             String writer=q.getCustomer().getCustid();
             List<Integer> ticketidList = DBManager.findTicketidByCustid(writer);
-            List<Ticket> ticketVOList = new ArrayList<Ticket>();
+            List<Ticket> ticketVOList = new ArrayList<>();
             for (int ticketid : ticketidList) {
                 Optional<Ticket> optionalTicket=ts.findByTicketid(ticketid);
                 if(optionalTicket.isPresent()) {
@@ -270,7 +268,7 @@ public class QnaController {
     }
 
     @GetMapping("/qna/delete/{qna_no}")
-    public ModelAndView delete(@PathVariable int qna_no, HttpSession session){
+    public ModelAndView delete(@PathVariable int qna_no){
         ModelAndView mav=new ModelAndView("redirect:/qna/list");
         qs.delete(qna_no);
         return mav;
@@ -290,7 +288,7 @@ public class QnaController {
         if(insertOrUpdate.equals("insert")) {
             String qnaWriter = customer.getCustid();
             NotificationVO notificationVO = new NotificationVO(0, qnaWriter, qna_no, null);
-            int re=DBManager.insertNotification(notificationVO);
+            DBManager.insertNotification(notificationVO);
 
             // 답글 알림 이메일 보내기
             String to=customer.getEmail();
@@ -314,7 +312,7 @@ public class QnaController {
     @ResponseBody
     @GetMapping("/listNotification")
     public List<NotificationByCustidVO> listNotification(HttpSession session){
-        List<NotificationByCustidVO> notificationList=new ArrayList<NotificationByCustidVO>();
+        List<NotificationByCustidVO> notificationList=new ArrayList<>();
         String sessionId="";
         if(session.getAttribute("id")!=null) {
             sessionId = (String) session.getAttribute("id");
@@ -328,8 +326,7 @@ public class QnaController {
     @GetMapping("/countNChecked")
     public int countNChecked(HttpSession session){
         String loginId=(String)session.getAttribute("id");
-        int cnt=DBManager.countNChecked(loginId);
-        return cnt;
+        return DBManager.countNChecked(loginId);
     }
 
     // DB 'checked' 칼럼 업데이트 n->y
