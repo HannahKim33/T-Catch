@@ -128,7 +128,7 @@
 ## 🔅 핵심 트러블슈팅
 
 <details>
-<summary><h4>알림 기능을 위한 테이블 추가</h4></summary>
+<summary><h3>알림 기능을 위한 테이블 추가</h3></summary>
  
  <img width="700" src="https://user-images.githubusercontent.com/97737386/231192261-b7968bc3-9bc6-49e0-a71d-f8d7381cc526.png">
 
@@ -140,7 +140,7 @@
 
 <details>
 
- <summary><h4>중복 코드 제거를 위한 모듈화</h4></summary>
+ <summary><h3>중복 코드 제거를 위한 모듈화</h3></summary>
  
  Q&A와 공지사항 게시판, 리뷰에서 공통으로 사용되는 페이징, 검색, 카테고리별 보기 기능을 모듈화해 코드 중복을 줄이고 유지보수성을 높였습니다. 
  
@@ -384,7 +384,7 @@ Controller에서 Ajax 작성할 때 메소드 리턴타입을 void로 하면 무
 </details>
 </details>
 
-## 🔅 인사이트
+## 🔅 느낀 점 
 
 - 모듈화 : 중복되는 코드를 모듈화하면 재사용성이 높아지고 유지보수가 훨씬 쉬워짐을 느꼈습니다.
 
