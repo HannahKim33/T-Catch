@@ -51,11 +51,41 @@
 
 #### 예매 완료 이메일/문자 전송
 
+<img width="300" src="https://user-images.githubusercontent.com/97737386/231175621-bb1235ea-b582-444f-90ec-88abbbd33b5c.png">
+
+- 예약 완료 시 자동 전송되는 이메일과 문자메시지입니다.
+- HTML 형식의 이메일을 발송하여 예매 내역을 확인할 수 있는 링크를 포함시켰습니다.
+- 예매 테이블과 티켓 테이블을 조인해 공연 일시, 장소 등의 정보를 함께 출력했습니다.
+
 #### Q&A 게시판
+
+![image](https://user-images.githubusercontent.com/97737386/231177037-7e2b7a87-2e1a-41f5-8990-78a7e695f194.png)
+
+- 답변 여부와 비공개 여부를 아이콘으로 처리해 가독성을 높였습니다.
+- 비공개/공개 여부를 설정할 수 있게 했고, 답글 등록과 수정, 삭제는 관리자만 가능하도록 접근을 제어했습니다.
+- 답글이 작성될 경우 문의 작성자에게 알림이 전송됩니다.
+- 관리자로 접속할 경우, 답글 내용이 있을 경우에만 수정과 삭제가 가능하도록 만들었습니다.
 
 #### 공지사항 게시판
 
+![image](https://user-images.githubusercontent.com/97737386/231177147-34422a14-90e4-4e77-8431-fe1956175f71.png)
+- Spring Security를 적용해 관리자만 공지사항 작성, 수정, 삭제할 수 있도록 제어했습니다.
+- 공지사항 수정 페이지 요청 시 DB에 저장된 분류, 제목, 내용 값을 자동으로 출력했습니다.
+
+#### Q&A & 공지사항 게시판 공통
+<img width="300" src="https://user-images.githubusercontent.com/97737386/231179935-8f0e9638-35df-42a1-a705-8c3a14698a21.png">
+<img width="300" src="https://user-images.githubusercontent.com/97737386/231179959-1515521d-f8f6-44c9-8992-7dd9cf1a865a.png">
+![image](https://user-images.githubusercontent.com/97737386/231181145-95047ccd-5011-4c68-a508-ebabcdcae6f2.png)
+
+
+
+- 페이징 · 검색 · 카테고리별로 보기 기능 등 공통되는 코드를 모듈화하여 불필요한 반복을 줄였습니다.
+- 검색 키워드, 검색 기준 칼럼을 세션에 저장하여 페이지가 넘어가도 그대로 유지되도록 만들었습니다.
+- 검색+카테고리별로 보기를 함께 적용 가능하도록 만들었습니다.
+
 #### Q&A 답변 알림
+
+
 
 #### 공연 리뷰
 
@@ -92,6 +122,10 @@ notification 테이블은 qna 테이블과 customer 테이블의 기본키를 �
   <summary>개선된 코드</summary>
  </details>
  
+ 검색
+ 
+ 카테고리별 보기
+ 
  
 </details>
 
@@ -101,7 +135,7 @@ notification 테이블은 qna 테이블과 customer 테이블의 기본키를 �
 <details>
  <summary><h2>🔅 그 외 트러블슈팅</h2></summary>
  <details>
- <summary><h3>Ajax 호출 오류</h3>(cannot find template)</summary>
+ <summary><h4>Ajax 호출 오류</h4>(cannot find template)</summary>
 
  ```java
  @GetMapping("/qna/updateAnswer")
@@ -117,7 +151,7 @@ notification 테이블은 qna 테이블과 customer 테이블의 기본키를 �
  </details>
 
 <details>
-<summary><h3>Security 403 forbidden error</h3></summary>
+<summary><h4>Security 403 forbidden error</h4></summary>
 Security 사용할 경우 form에 토큰 추가해야 함 (DB modify할 때)
 
 ```html
@@ -126,7 +160,7 @@ Security 사용할 경우 form에 토큰 추가해야 함 (DB modify할 때)
 </details>
 
 <details>
-<summary><h3>sqlSessionFactory가 null일 경우</h3></summary>
+<summary><h4>sqlSessionFactory가 null일 경우</h4></summary>
 ```xml
 Cannot invoke "org.apache.ibatis.session.SqlSessionFactory.openSession()" because "com.example.finalpro.db.DBManager.sqlSessionFactory" is null] with root cause
 ```
@@ -150,7 +184,7 @@ Possible causes:
 </details>
 
 <details>
-<summary><h3>Controller Mapping 오류</h3></summary>
+<summary><h4>Controller Mapping 오류</h4></summary>
 
 ```xml
 Error creating bean with name 'org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration': Unsatisfied dependency expressed through method 'setFilterChains' parameter 0: Error creating bean with name 'filterChain' defined in class path resource [com/example/finalpro/SecurityConfig.class]: Failed to instantiate [org.springframework.security.web.SecurityFilterChain]: Factory method 'filterChain' threw exception with message: Error creating bean with name 'mvcHandlerMappingIntrospector' defined in class path resource [org/springframework/boot/autoconfigure/web/servlet/WebMvcAutoConfiguration$EnableWebMvcConfiguration.class]: Error creating bean with name 'requestMappingHandlerMapping' defined in class path resource [org/springframework/boot/autoconfigure/web/servlet/WebMvcAutoConfiguration$EnableWebMvcConfiguration.class]: Ambiguous mapping. Cannot map 'ticketController' method 
@@ -164,12 +198,12 @@ com.example.finalpro.controller.CustomerController#main(HttpSession, Model) mapp
 </details>
 
 <details>
-<summary><h3>form 안에 있는 button을 누르면 자동으로 form이 submit 되는 문제</h3></summary>
+<summary><h4>form 안에 있는 button을 누르면 자동으로 form이 submit 되는 문제</h4></summary>
 button을 &lt;button&gt; 말고 &lt;input type=”button”&gt;으로 만들면 해결됨
 </details>
 
 <details>
-<summary><h3>Mybatis Mapper SQL에서 칼럼 이름을 변수로 지정할 경우 표기법</h3></summary>
+<summary><h4>Mybatis Mapper SQL에서 칼럼 이름을 변수로 지정할 경우 표기법</h4></summary>
 ```
 ${변수}
 <!--예: order by ${칼럼이름}-->
@@ -178,14 +212,14 @@ ${변수}
 값을 받아올 경우와는 달리 #{}가 아님을 주의!! 
 </details>
 <details>
-<summary><h3>dependency 추가 시 미인식 문제</h3></summary>
+<summary><h4>dependency 추가 시 미인식 문제</h4></summary>
 pom.xml에 dependency 추가했을 때 프로젝트 reload를 해줘야 dependency를 인식한다.
 
 (IntelliJ) reload 방법: 오른쪽 Maven 탭→프로젝트이름→reload project
 </details>
 
 <details>
-<summary><h3>service 객체가 null인 경우</h3></summary>
+<summary><h4>service 객체가 null인 경우</h4></summary>
 ```
 Cannot invoke "com.example.finalpro.service.TicketService.findByTicketid(int)" because "this.ts" is null
 ```
@@ -193,7 +227,7 @@ Cannot invoke "com.example.finalpro.service.TicketService.findByTicketid(int)" b
 </details>
 
 <details>
-<summary><h3>Ajax 실행 시 무한루프</h3></summary>
+<summary><h4>Ajax 실행 시 무한루프</h4></summary>
 Controller에서 Ajax 작성할 때 메소드 리턴타입을 void로 하면 무한루프가 생길 수 있다.
 </details>
 </details>
