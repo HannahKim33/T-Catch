@@ -49,7 +49,8 @@
 
 ## 🔅 담당 기능
 
-### 예매 완료 이메일/문자 전송
+<details>
+<summary><h3> 예매 완료 이메일/문자 전송</h3></summary>
 
 <img width="300" src="https://user-images.githubusercontent.com/97737386/231175621-bb1235ea-b582-444f-90ec-88abbbd33b5c.png">
 
@@ -57,7 +58,10 @@
 - HTML 형식의 이메일을 발송하여 예매 내역을 확인할 수 있는 링크를 포함시켰습니다.
 - 예매 테이블과 티켓 테이블을 조인해 공연 일시, 장소 등의 정보를 함께 출력했습니다.
 
-### Q&A 게시판
+</details>
+
+<details>
+<summary><h3>Q&A 게시판</h3></summary>
 
 ![image](https://user-images.githubusercontent.com/97737386/231177037-7e2b7a87-2e1a-41f5-8990-78a7e695f194.png)
 
@@ -66,22 +70,33 @@
 - 답글이 작성될 경우 문의 작성자에게 알림이 전송됩니다.
 - 관리자로 접속할 경우, 답글 내용이 있을 경우에만 수정과 삭제가 가능하도록 만들었습니다.
 
-### 공지사항 게시판
+</details>
+
+<details>
+<summary><h3>공지사항 게시판</h3></summary>
 
 ![image](https://user-images.githubusercontent.com/97737386/231177147-34422a14-90e4-4e77-8431-fe1956175f71.png)
 - Spring Security를 적용해 관리자만 공지사항 작성, 수정, 삭제할 수 있도록 제어했습니다.
 - 공지사항 수정 페이지 요청 시 DB에 저장된 분류, 제목, 내용 값을 자동으로 출력했습니다.
+</details>
 
-### Q&A & 공지사항 게시판 공통
+<details>
+<summary><h3>Q&A & 공지사항 게시판 공통</h3></summary>
+
 <img width="300" src="https://user-images.githubusercontent.com/97737386/231179935-8f0e9638-35df-42a1-a705-8c3a14698a21.png">
+<br>
 <img width="300" src="https://user-images.githubusercontent.com/97737386/231179959-1515521d-f8f6-44c9-8992-7dd9cf1a865a.png">
+<br>
 <img width="150" src="https://user-images.githubusercontent.com/97737386/231181145-95047ccd-5011-4c68-a508-ebabcdcae6f2.png">
 
 - 페이징 · 검색 · 카테고리별로 보기 기능 등 공통되는 코드를 모듈화하여 불필요한 반복을 줄였습니다.
 - 검색 키워드, 검색 기준 칼럼을 세션에 저장하여 페이지가 넘어가도 그대로 유지되도록 만들었습니다.
 - 검색+카테고리별로 보기를 함께 적용 가능하도록 만들었습니다.
 
-### Q&A 답변 알림
+</details>
+
+<details>
+<summary><h3>Q&A 답변 알림</summary></h3>
 
 <img width="500" src="https://user-images.githubusercontent.com/97737386/231181805-2ead1d70-159c-47f2-a132-2435477bfe35.png">
 
@@ -90,20 +105,25 @@
   - 읽음 처리
   - 안 읽은 알림 갯수 출력
   - 알림 삭제
+</details>
 
-### 공연 리뷰
+<details>
+<summary><h3>공연 리뷰</summary></h3>
 
 <img width="600" src="https://user-images.githubusercontent.com/97737386/231184429-d01248a5-7a8a-400c-96e2-dc64a5833d66.png">
 
 - 기본적인 CRUD 및 페이징 처리
 - DB TICKET 테이블과 REVIEW 테이블을 Join해 티켓정보를 리뷰와 함께 출력했습니다.
+</details>
 
-### Kakao 주소 API 적용
+<details>
+<summary><h3>Kakao 주소 API 적용</summary></h3>
 
 <img width="600" src="https://user-images.githubusercontent.com/97737386/231184335-b03c15cc-1bd5-4a09-ac41-2304dd00c5d1.png">
 
 - 회원가입·회원정보 수정 시 사용자에게 주소를 입력받기 위해 Kakao 주소 API를 적용했습니다.
 - 주소 API를 담당하는 코드는 모듈화해 재사용했습니다.
+</details>
 
 ## 🔅 핵심 트러블슈팅
 
@@ -128,31 +148,138 @@
  
  <details>
   <summary>기존 코드</summary>
+  
+  ```
+        // 페이징
+        if (pageNum==null){
+            pageNum=1;
+        }
+        int totalRecord=DBManager.getTotalQnaRecord(hashMap);
+        int pageSize=10;
+        int totalPage=(int)Math.ceil((double)totalRecord/pageSize);
+        if(totalPage==0){
+            totalPage=1;
+        }
+        mav.addObject("totalPage",totalPage);
+
+        // 해당 페이지의 시작 글번호, 끝 글번호
+        int startNo=(pageNum-1)*pageSize+1;
+        int endNo=pageNum*pageSize;
+        hashMap.put("startNo",startNo);
+        hashMap.put("endNo",endNo);
+
+        // 페이지를 페이징
+        int pageGroupSize=5;   // 한 페이지 당 페이지 번호 몇 개씩 출력할지
+
+        int firstPage=((pageNum-1)/pageGroupSize)*pageGroupSize+1;
+        int lastPage=firstPage+pageGroupSize-1;
+        if(lastPage>totalPage){
+            lastPage=totalPage;
+        }
+ ```
+        
  </details>
  
  <details>
   <summary>개선된 코드</summary>
+  
+  ```
+        // 페이징
+        if (pageNum==null){
+            pageNum=1;
+        }
+
+        Page page=new Page(DBManager.getTotalQnaRecord(hashMap),10,5,pageNum);
+
+        int totalPage=page.getTotalPage();
+
+        mav.addObject("totalPage",totalPage);
+
+        // 해당 페이지의 시작 글번호, 끝 글번호
+        hashMap.put("startNo",page.getStartNo());
+        hashMap.put("endNo",page.getEndNo());
+
+        // 해당 페이지에서 보여줄 페이지 번호 첫 번째와 마지막
+        int firstPage=page.getFirstPage();
+        int lastPage=page.getLastPage();
+  ```
+  
  </details>
  
- ##### 검색 기능 모듈화
+ ##### 검색 & 카테고리별 보기 기능 모듈화
  
  <details>
   <summary>기존 코드</summary>
+  
+  ```
+        HashMap<String, Object> hashMap=new HashMap<String,Object>();
+
+        // 카테고리별로 보기
+        if(category!=null) {
+            switch (category) {
+                case "book":
+                    category = "예매/드로우";
+                    break;
+                case "transaction":
+                    category = "결제/환불";
+                    break;
+                case "etc":
+                    category = "기타";
+                    break;
+            }
+
+            // 카테고리가 all이면 세션에 저장된 카테고리 지우기
+            if(category.equals("all")) {
+                if(session.getAttribute("category")!=null) {
+                    session.removeAttribute("category");
+                }
+                category = null;
+            }else{  // all이 아니라 특정 카테고리를 선택했을 경우
+                //카테고리를 세션에 저장한다.
+                session.setAttribute("category",category);
+                //세션에 원래 있던 카테는 필요없음.
+            }
+            // 카테고리를 클릭 안했을 경우
+        }else{
+            // 그 전에 클릭했던 게 있다면 (=세션에 저장되어 있다면)
+            if(session.getAttribute("category")!=null) {
+                //세션에 저장되어 있는 카테를 가져온다.
+                category = (String) session.getAttribute("category");
+
+                //둘다 없다면 => 카테고리별로 보기 x => null => 처리 필요 없음.
+            }
+        }
+
+        hashMap.put("category", category);
+
+        //검색
+        if(keyword!=null) {
+            session.setAttribute("keyword",keyword);
+            session.setAttribute("searchColumn", searchColumn);
+            hashMap.put("searchColumn", searchColumn);
+            hashMap.put("keyword", keyword);
+        }else{
+            if(session.getAttribute("keyword")!=null){
+                keyword= (String) session.getAttribute("keyword");
+                searchColumn= (String) session.getAttribute("searchColumn");
+                hashMap.put("searchColumn", searchColumn);
+                hashMap.put("keyword", keyword);
+            }
+        }
+  ```
+  
  </details>
  
  <details>
   <summary>개선된 코드</summary>
+  
+  ```
+  HashMap<String, Object> hashMap= search.searchProcess(category, session, keyword,
+                searchColumn, "notice");
+  ```
+  
  </details>
  
- ##### 카테고리별 보기
- 
-  <details>
-  <summary>기존 코드</summary>
- </details>
- 
- <details>
-  <summary>개선된 코드</summary>
- </details>
  
 </details>
 
