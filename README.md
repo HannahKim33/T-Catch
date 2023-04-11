@@ -49,7 +49,7 @@
 
 ## 🔅 담당 기능
 
-#### 예매 완료 이메일/문자 전송
+### 예매 완료 이메일/문자 전송
 
 <img width="300" src="https://user-images.githubusercontent.com/97737386/231175621-bb1235ea-b582-444f-90ec-88abbbd33b5c.png">
 
@@ -57,7 +57,7 @@
 - HTML 형식의 이메일을 발송하여 예매 내역을 확인할 수 있는 링크를 포함시켰습니다.
 - 예매 테이블과 티켓 테이블을 조인해 공연 일시, 장소 등의 정보를 함께 출력했습니다.
 
-#### Q&A 게시판
+### Q&A 게시판
 
 ![image](https://user-images.githubusercontent.com/97737386/231177037-7e2b7a87-2e1a-41f5-8990-78a7e695f194.png)
 
@@ -66,30 +66,44 @@
 - 답글이 작성될 경우 문의 작성자에게 알림이 전송됩니다.
 - 관리자로 접속할 경우, 답글 내용이 있을 경우에만 수정과 삭제가 가능하도록 만들었습니다.
 
-#### 공지사항 게시판
+### 공지사항 게시판
 
 ![image](https://user-images.githubusercontent.com/97737386/231177147-34422a14-90e4-4e77-8431-fe1956175f71.png)
 - Spring Security를 적용해 관리자만 공지사항 작성, 수정, 삭제할 수 있도록 제어했습니다.
 - 공지사항 수정 페이지 요청 시 DB에 저장된 분류, 제목, 내용 값을 자동으로 출력했습니다.
 
-#### Q&A & 공지사항 게시판 공통
+### Q&A & 공지사항 게시판 공통
 <img width="300" src="https://user-images.githubusercontent.com/97737386/231179935-8f0e9638-35df-42a1-a705-8c3a14698a21.png">
 <img width="300" src="https://user-images.githubusercontent.com/97737386/231179959-1515521d-f8f6-44c9-8992-7dd9cf1a865a.png">
-![image](https://user-images.githubusercontent.com/97737386/231181145-95047ccd-5011-4c68-a508-ebabcdcae6f2.png)
-
-
+<img width="150" src="https://user-images.githubusercontent.com/97737386/231181145-95047ccd-5011-4c68-a508-ebabcdcae6f2.png">
 
 - 페이징 · 검색 · 카테고리별로 보기 기능 등 공통되는 코드를 모듈화하여 불필요한 반복을 줄였습니다.
 - 검색 키워드, 검색 기준 칼럼을 세션에 저장하여 페이지가 넘어가도 그대로 유지되도록 만들었습니다.
 - 검색+카테고리별로 보기를 함께 적용 가능하도록 만들었습니다.
 
-#### Q&A 답변 알림
+### Q&A 답변 알림
 
+<img width="500" src="https://user-images.githubusercontent.com/97737386/231181805-2ead1d70-159c-47f2-a132-2435477bfe35.png">
 
+- Ajax를 이용해 아래의 기능을 구현했습니다.
+  - 알림 생성
+  - 읽음 처리
+  - 안 읽은 알림 갯수 출력
+  - 알림 삭제
 
-#### 공연 리뷰
+### 공연 리뷰
 
-#### Kakao 주소 API 적용
+<img width="600" src="https://user-images.githubusercontent.com/97737386/231184429-d01248a5-7a8a-400c-96e2-dc64a5833d66.png">
+
+- 기본적인 CRUD 및 페이징 처리
+- DB TICKET 테이블과 REVIEW 테이블을 Join해 티켓정보를 리뷰와 함께 출력했습니다.
+
+### Kakao 주소 API 적용
+
+<img width="600" src="https://user-images.githubusercontent.com/97737386/231184335-b03c15cc-1bd5-4a09-ac41-2304dd00c5d1.png">
+
+- 회원가입·회원정보 수정 시 사용자에게 주소를 입력받기 위해 Kakao 주소 API를 적용했습니다.
+- 주소 API를 담당하는 코드는 모듈화해 재사용했습니다.
 
 ## 🔅 핵심 트러블슈팅
 
@@ -147,12 +161,12 @@ notification 테이블은 qna 테이블과 customer 테이블의 기본키를 �
    }
  ```
 
- @ResponseBody 를 붙이지 않아서 template[1]을 찾을 수 없다는 에러 뜸. 리턴 값이 1이라서 1이라는 이름의 템플릿을 찾은 듯함
+ @ResponseBody 를 붙이지 않아서 template[1]을 찾을 수 없다는 에러 뜸. 리턴 값이 1이라서 1이라는 이름의 템플릿을 찾은 듯하다.
  </details>
 
 <details>
 <summary><h4>Security 403 forbidden error</h4></summary>
-Security 사용할 경우 form에 토큰 추가해야 함 (DB modify할 때)
+Spring Security를 적용할 경우, DB를 변경하는 작업을 수행하는 form에는 토을을 추가해야 한다.
 
 ```html
 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
@@ -167,20 +181,20 @@ Cannot invoke "org.apache.ibatis.session.SqlSessionFactory.openSession()" becaus
 
 -> mapper 파일 문제
 
-Possible causes:
+가능한 원인들 :
 
-- xml태그 위치가 잘못되었다.
-- xxxMapper.xml 파일을 Configuration 파일에 연결 안 했다.
-- Configuration 파일에 mapper resource가 중복되었다.
-- alias를 잘못 적었다.
-- mapper 파일 내 중복되는 id가 있다.
+- xml태그 위치가 잘못된 경우
+- xxxMapper.xml 파일을 Configuration 파일에 연결 안 한 경우
+- Configuration 파일에 mapper resource가 중복되었을 경우
+- alias를 잘못 적었을 경우
+- mapper 파일 내 중복되는 id가 있을 경우
 - mapper 파일 내에 
 
 ```xml
 <<<<<<<<< Temporary merge branch 1
 ```
 
-이런 깃 충돌 메시지가 남아 있다.
+이런 깃 충돌 메시지가 남아 있을 경우
 </details>
 
 <details>
