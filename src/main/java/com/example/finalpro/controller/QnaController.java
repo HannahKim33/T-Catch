@@ -7,6 +7,7 @@ import com.example.finalpro.entity.Ticket;
 import com.example.finalpro.function.page.Paging;
 import com.example.finalpro.service.*;
 import com.example.finalpro.util.Page;
+import com.example.finalpro.util.Search;
 import com.example.finalpro.vo.NotificationByCustidVO;
 import com.example.finalpro.vo.NotificationVO;
 import com.example.finalpro.vo.QnaVO;

@@ -1,4 +1,4 @@
-package com.example.finalpro.service;
+package com.example.finalpro.util;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;

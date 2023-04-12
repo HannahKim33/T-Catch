@@ -3,7 +3,7 @@ package com.example.finalpro.controller;
 import com.example.finalpro.db.DBManager;
 import com.example.finalpro.entity.Notice;
 import com.example.finalpro.service.NoticeService;
-import com.example.finalpro.service.Search;
+import com.example.finalpro.util.Search;
 import com.example.finalpro.util.Page;
 import com.example.finalpro.vo.NoticeVO;
 import jakarta.servlet.http.HttpServletRequest;
