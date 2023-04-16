@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class Page {
@@ -15,9 +14,20 @@ public class Page {
     //한 페이지에 보여줄 페이지 번호의 개수 ( 12345 / 678910 / ...)
     private int pageGroupSize;
     //요청한 페이지 번호
-    private int pageNum;
+    private Integer pageNum;
     //해당 페이지에서 보여줄 글 목록 중 첫 번째와 마지막, 보여줄 페이지 번호 중 첫 번째와 마지막
 //    int startNo, endNo, firstPage, lastPage;
+
+    public Page(int totalRecord, int pageSize, int pageGroupSize, Integer pageNum) {
+        this.totalRecord = totalRecord;
+        this.pageSize = pageSize;
+        this.pageGroupSize = pageGroupSize;
+        if(pageNum==null){
+            this.pageNum = 1;
+        }else {
+            this.pageNum = pageNum;
+        }
+    }
 
     public int getTotalPage(){
         int totalPage=(int)Math.ceil((double)totalRecord/pageSize);

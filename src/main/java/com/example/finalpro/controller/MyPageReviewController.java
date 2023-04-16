@@ -37,9 +37,7 @@ public class MyPageReviewController {
 
     @GetMapping({"/myPageReview/{pageNum}", "/myPageReview"})
     public ModelAndView MyPageReview(HttpSession session, @PathVariable(required = false) Integer pageNum){
-        if(pageNum==null){
-            pageNum=1;
-        }
+
         ModelAndView mav=new ModelAndView("/myPage/myPageReview");
         String loginId=(String) session.getAttribute("id");
         Customer loginCustomer=cs.findByCustid(loginId);

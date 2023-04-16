@@ -65,9 +65,6 @@ public class QnaController {
                 searchColumn, "qna");
 
         // 페이징
-        if (pageNum==null){
-            pageNum=1;
-        }
 
         Page page=new Page(DBManager.getTotalQnaRecord(hashMap),10,5,pageNum);
 

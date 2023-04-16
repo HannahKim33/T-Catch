@@ -53,9 +53,6 @@ public class NoticeController {
                 searchColumn, "notice");
         
         // 페이징
-        if (pageNum==null){
-            pageNum=1;
-        }
 
         Page page=new Page(DBManager.getTotalNoticeRecord(hashMap),10,5,pageNum);
 
