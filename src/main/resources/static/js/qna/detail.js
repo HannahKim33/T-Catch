@@ -9,21 +9,31 @@ $(function(){
         if(div_qna_answer!=""){
             insertOrUpdate='update'
         }
-
+        let qna_no=$('#qna_no').text()
         let custid=$('#div_custid').text()
         //입력 내용 길이가 0보다 커야 ajax 실행
         if(answer_input.length>0) {
             $.ajax({
                 url: "/qna/answer/update",
-                data: {qna_no: $('#qna_no').text(),
+                data: {qna_no: qna_no,
                     qna_answer: answer_input,
-                    insertOrUpdate: insertOrUpdate,
                     custid: custid},
                 success: function (re) {
                     if(re==1){
                         alert('등록했습니다.')
                         $('#div_qna_answer').text($('.textarea_qna_answer').val())
                         $('#answer_delete').removeAttr("hidden")
+
+                        //알림생성과 이메일 발송
+                        $.ajax({
+                            url:"/qna/answer/notif_and_email",
+                            data:{qna_no: qna_no,
+                                insertOrUpdate: insertOrUpdate,
+                                custid: custid},
+                            success: function (){
+
+                            }
+                        })
                     }
                 }
             })

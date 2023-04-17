@@ -18,12 +18,19 @@ public class QnaService {
 
     public List<Qna> findAll(){return dao.findAll();}
 
-    public Optional<Qna> findById(int qna_no) {return dao.findById(qna_no);}
+    public Qna findById(int qna_no) {
+        Optional<Qna> optionalQna=dao.findById(qna_no);
+        if(optionalQna.isPresent()) {
+            return optionalQna.get();
+        }else{
+            throw new RuntimeException("qna_no is wrong or qna was deleted");
+        }
+    }
 
 
 
     public void delete(int qna_no) {
-        Qna q=findById(qna_no).get();
+        Qna q=findById(qna_no);
         dao.delete(q);
     }
 

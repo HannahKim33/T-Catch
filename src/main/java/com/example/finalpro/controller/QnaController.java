@@ -95,22 +95,17 @@ public class QnaController {
     @GetMapping("/qna/detail/{qna_no}")
     public ModelAndView detail(@PathVariable int qna_no){
         ModelAndView mav=new ModelAndView("/qna/detail");
-        Optional<Qna> optionalQna=qs.findById(qna_no);
-        if(optionalQna.isPresent()){
-            Qna q =optionalQna.get();
+        Qna q =qs.findById(qna_no);
 //            String custidByQna_no=q.getCustomer().getCustid();
 //            String custidInSession=(String)session.getAttribute("id");
 //            if(!custidInSession.equals(custidByQna_no) && !custidInSession.equals("admin") && q.getQna_open().equals("n")){
 //                mav.addObject("msg","비공개 글입니다.");
 //                mav.setViewName("/error");
-//            }else {
-            DBManager.updateQNAHit(qna_no);
-            q.setQna_hit(q.getQna_hit()+1);
-            mav.addObject("q",q);
-        }else{
-            mav.addObject("msg","삭제된 글이거나 잘못된 접근입니다.");
-            mav.setViewName("/error");
-        }
+
+        DBManager.updateQNAHit(qna_no);
+        q.setQna_hit(q.getQna_hit()+1);
+        mav.addObject("q",q);
+
 
 
 //          다른 방법 (이게 더 복잡한 듯)
@@ -191,27 +186,22 @@ public class QnaController {
     @GetMapping("/qna/update/{qna_no}")
     public ModelAndView updateForm(@PathVariable int qna_no){
         ModelAndView mav=new ModelAndView("/qna/update");
-        Optional<Qna> optionalQna=qs.findById(qna_no);
-        if(optionalQna.isPresent()) {
-            Qna q=optionalQna.get();
-            mav.addObject("q",q);
+        Qna q=qs.findById(qna_no);
+        mav.addObject("q",q);
 
-            // 작성자가 예매한 티켓 VO 목록 가져오기
-            // 작성자 아이디
-            String writer=q.getCustomer().getCustid();
-            List<Integer> ticketidList = DBManager.findTicketidByCustid(writer);
-            List<Ticket> ticketVOList = new ArrayList<>();
-            for (int ticketid : ticketidList) {
-                Optional<Ticket> optionalTicket=ts.findByTicketid(ticketid);
-                if(optionalTicket.isPresent()) {
-                    ticketVOList.add(optionalTicket.get());
-                }
+        // 작성자가 예매한 티켓 VO 목록 가져오기
+        // 작성자 아이디
+        String writer=q.getCustomer().getCustid();
+        List<Integer> ticketidList = DBManager.findTicketidByCustid(writer);
+        List<Ticket> ticketVOList = new ArrayList<>();
+        for (int ticketid : ticketidList) {
+            Optional<Ticket> optionalTicket=ts.findByTicketid(ticketid);
+            if(optionalTicket.isPresent()) {
+                ticketVOList.add(optionalTicket.get());
             }
-            mav.addObject("ticketVOList", ticketVOList);
-        }else{
-            mav.addObject("msg","잘못된 접근입니다.");
-            mav.setViewName("/error");
         }
+        mav.addObject("ticketVOList", ticketVOList);
+
         return mav;
     }
 
@@ -277,24 +267,27 @@ public class QnaController {
         QnaVO q=new QnaVO();
         q.setQna_no(qna_no);
         q.setQna_answer(qna_answer);
+        return DBManager.updateAnswer(q);
+    }
 
-        Qna qna=qs.findById(qna_no).get();
-        Customer customer=qna.getCustomer();
+    @ResponseBody
+    @GetMapping("/qna/answer/notif_and_email")
+    public int createNotifAndSendEmail(int qna_no, String insertOrUpdate, String custid){
         // insert일 경우 notification 추가
         if(insertOrUpdate.equals("insert")) {
-            String qnaWriter = customer.getCustid();
-            NotificationVO notificationVO = new NotificationVO(0, qnaWriter, qna_no, null);
+            // 답변 등록 알림 생성
+            NotificationVO notificationVO = new NotificationVO(0, custid, qna_no, null);
             DBManager.insertNotification(notificationVO);
 
             // 답글 알림 이메일 보내기
-            String to=customer.getEmail();
+            String to=cs.findByCustid(custid).getEmail();
             String subject="[T-CATCH] 문의에 답변이 등록되었습니다";
             String text="<h2>QNA 답변 등록 알림</h2>"
-                    +"<div>"+qna.getQna_title()+"에 답변이 등록되었습니다.</div>"
+                    +"<div>"+qs.findById(qna_no).getQna_title()+"에 답변이 등록되었습니다.</div>"
                     +"<a href='http://localhost:8088/qna/detail/"+qna_no+"'>확인하기</a>";
             es.sendHtmlEmail(to, subject, text);
         }
-        return DBManager.updateAnswer(q);
+        return 0;
     }
 
     //답글 삭제 Ajax
@@ -322,7 +315,11 @@ public class QnaController {
     @GetMapping("/countNChecked")
     public int countNChecked(HttpSession session){
         String loginId=(String)session.getAttribute("id");
-        return DBManager.countNChecked(loginId);
+        if(loginId!=null){
+            return DBManager.countNChecked(loginId);
+        }else{
+            return 0;
+        }
     }
 
     // DB 'checked' 칼럼 업데이트 n->y
@@ -331,7 +328,9 @@ public class QnaController {
     public int updateCheckedToY(HttpSession session){
         String loginId=(String)session.getAttribute("id");
         int re=-1;
-        re=DBManager.updateCheckedToY(loginId);
+        if(loginId!=null){
+            re=DBManager.updateCheckedToY(loginId);
+        }
         return re;
     }
 
