@@ -95,7 +95,14 @@ public class QnaController {
     @GetMapping("/qna/detail/{qna_no}")
     public ModelAndView detail(@PathVariable int qna_no){
         ModelAndView mav=new ModelAndView("/qna/detail");
-        Qna q =qs.findById(qna_no);
+        Qna q =new Qna();
+        try {
+            q = qs.findById(qna_no);
+        }catch(Exception e){
+            mav.setViewName("/error");
+            mav.addObject("msg","존재하지 않는 글입니다.");
+            return mav;
+        }
 //            String custidByQna_no=q.getCustomer().getCustid();
 //            String custidInSession=(String)session.getAttribute("id");
 //            if(!custidInSession.equals(custidByQna_no) && !custidInSession.equals("admin") && q.getQna_open().equals("n")){
@@ -186,7 +193,14 @@ public class QnaController {
     @GetMapping("/qna/update/{qna_no}")
     public ModelAndView updateForm(@PathVariable int qna_no){
         ModelAndView mav=new ModelAndView("/qna/update");
-        Qna q=qs.findById(qna_no);
+        Qna q =new Qna();
+        try {
+            q = qs.findById(qna_no);
+        }catch(Exception e){
+            mav.setViewName("/error");
+            mav.addObject("msg","존재하지 않는 글입니다.");
+            return mav;
+        }
         mav.addObject("q",q);
 
         // 작성자가 예매한 티켓 VO 목록 가져오기
@@ -256,7 +270,12 @@ public class QnaController {
     @GetMapping("/qna/delete/{qna_no}")
     public ModelAndView delete(@PathVariable int qna_no){
         ModelAndView mav=new ModelAndView("redirect:/qna/list");
-        qs.delete(qna_no);
+        try {
+            qs.delete(qna_no);
+        }catch (Exception e){
+            mav.setViewName("/error");
+            mav.addObject("msg","존재하지 않는 글입니다.");
+        }
         return mav;
     }
 
@@ -275,6 +294,15 @@ public class QnaController {
     public int createNotifAndSendEmail(int qna_no, String insertOrUpdate, String custid){
         // insert일 경우 notification 추가
         if(insertOrUpdate.equals("insert")) {
+
+            Qna q =new Qna();
+            try {
+                q = qs.findById(qna_no);
+            }catch(Exception e){
+                e.getStackTrace();
+                return -1;
+            }
+
             // 답변 등록 알림 생성
             NotificationVO notificationVO = new NotificationVO(0, custid, qna_no, null);
             DBManager.insertNotification(notificationVO);
@@ -283,7 +311,7 @@ public class QnaController {
             String to=cs.findByCustid(custid).getEmail();
             String subject="[T-CATCH] 문의에 답변이 등록되었습니다";
             String text="<h2>QNA 답변 등록 알림</h2>"
-                    +"<div>"+qs.findById(qna_no).getQna_title()+"에 답변이 등록되었습니다.</div>"
+                    +"<div>"+q.getQna_title()+"에 답변이 등록되었습니다.</div>"
                     +"<a href='http://localhost:8088/qna/detail/"+qna_no+"'>확인하기</a>";
             es.sendHtmlEmail(to, subject, text);
         }

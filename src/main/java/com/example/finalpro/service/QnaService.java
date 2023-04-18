@@ -18,25 +18,19 @@ public class QnaService {
 
     public List<Qna> findAll(){return dao.findAll();}
 
-    public Qna findById(int qna_no){
+    public Qna findById(int qna_no) throws Exception{
         Optional<Qna> optionalQna=dao.findById(qna_no);
 
         if(optionalQna.isPresent()) {
             return optionalQna.get();
         }else{
-            try {
-                throw new Exception("qna_no is wrong or qna was deleted");
-            }catch (Exception e){
-                Qna qna=new Qna();
-                qna.setQna_no(-1);
-                return qna;
-            }
+            throw new Exception("존재하지 않는 글입니다.");
         }
     }
 
 
 
-    public void delete(int qna_no) {
+    public void delete (int qna_no) throws Exception{
         Qna q=findById(qna_no);
         dao.delete(q);
     }
