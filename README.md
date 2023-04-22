@@ -295,6 +295,7 @@
   
   3. 해결: 기존 코드에서는 하나의 Ajax에서 1), 2), 3)이 순차적으로 실행되었습니다. 하지만 사용자 입장에서는 등록 버튼 클릭 후 2)와 3)을 기다릴 이유가 없습니다. 개선 코드에서는 2)와 3)을 분리해 따로 Ajax 실행되게 해서, 1) 실행 후 alert을 띄우면서 동시에 2)와 3)을 비동기식으로 실행했습니다.
   
+  [해당 코드](https://github.com/HannahKim33/T-Catch/blob/173404de41ffae2a491c3bab72a311c62a5ee50d/src/main/resources/static/js/qna/detail.js#L16)
   
  </details>
  
