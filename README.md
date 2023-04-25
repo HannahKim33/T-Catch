@@ -271,17 +271,9 @@
   
  </details>
  
- <details>
-  <summary>개선된 코드</summary>
   
-  ```
-  HashMap<String, Object> hashMap= search.searchProcess(category, session, keyword,
-                searchColumn, "notice");
-  ```
-  
- </details>
-  
-  [해당 코드](https://github.com/HannahKim33/T-Catch/blob/a4604e25d78cc37286b5574953243d91b64a57d2/src/main/java/com/example/finalpro/controller/QnaController.java#L64)
+  [개선된 코드](https://github.com/HannahKim33/T-Catch/blob/a4604e25d78cc37286b5574953243d91b64a57d2/src/main/java/com/example/finalpro/controller/QnaController.java#L64)
+ 
  <br>
   
  ### [3] 답글 등록 처리 속도 느린 문제
