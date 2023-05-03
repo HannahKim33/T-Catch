@@ -95,7 +95,7 @@ public class QnaController {
     @GetMapping("/qna/detail/{qna_no}")
     public ModelAndView detail(@PathVariable int qna_no){
         ModelAndView mav=new ModelAndView("/qna/detail");
-        Qna q =new Qna();
+        Qna q;
         try {
             q = qs.findById(qna_no);
         }catch(Exception e){
@@ -143,15 +143,20 @@ public class QnaController {
         
         // 세션에 저장된 아이디로 유저가 예매한 티켓 VO 목록 가져오기
         String loginId=(String)session.getAttribute("id");
-        List<Integer> ticketidList=DBManager.findTicketidByCustid(loginId);
-        List<Ticket> ticketVOList=new ArrayList<>();
-        for(int ticketid:ticketidList){
-            Optional<Ticket> optionalTicket=ts.findByTicketid(ticketid);
-            if(optionalTicket.isPresent()) {
-                ticketVOList.add(optionalTicket.get());
+        if(loginId==null){
+            mav.addObject("msg","로그인 먼저 해주세요.");
+            mav.setViewName("/error");
+        }else {
+            List<Integer> ticketidList = DBManager.findTicketidByCustid(loginId);
+            List<Ticket> ticketVOList = new ArrayList<>();
+            for (int ticketid : ticketidList) {
+                Optional<Ticket> optionalTicket = ts.findByTicketid(ticketid);
+                if (optionalTicket.isPresent()) {
+                    ticketVOList.add(optionalTicket.get());
+                }
             }
+            mav.addObject("ticketVOList", ticketVOList);
         }
-        mav.addObject("ticketVOList",ticketVOList);
         return mav;
     }
 
@@ -193,7 +198,7 @@ public class QnaController {
     @GetMapping("/qna/update/{qna_no}")
     public ModelAndView updateForm(@PathVariable int qna_no){
         ModelAndView mav=new ModelAndView("/qna/update");
-        Qna q =new Qna();
+        Qna q;
         try {
             q = qs.findById(qna_no);
         }catch(Exception e){
@@ -282,7 +287,7 @@ public class QnaController {
     //답글 등록 Ajax
     @ResponseBody
     @GetMapping("/qna/answer/update")
-    public int updateAnswer(int qna_no, String qna_answer, String insertOrUpdate){
+    public int updateAnswer(int qna_no, String qna_answer){
         QnaVO q=new QnaVO();
         q.setQna_no(qna_no);
         q.setQna_answer(qna_answer);
@@ -295,7 +300,7 @@ public class QnaController {
         // insert일 경우 notification 추가
         if(insertOrUpdate.equals("insert")) {
 
-            Qna q =new Qna();
+            Qna q;
             try {
                 q = qs.findById(qna_no);
             }catch(Exception e){
@@ -330,7 +335,7 @@ public class QnaController {
     @GetMapping("/listNotification")
     public List<NotificationByCustidVO> listNotification(HttpSession session){
         List<NotificationByCustidVO> notificationList=new ArrayList<>();
-        String sessionId="";
+        String sessionId;
         if(session.getAttribute("id")!=null) {
             sessionId = (String) session.getAttribute("id");
             notificationList=DBManager.findNotificationByCustid(sessionId);
@@ -366,9 +371,7 @@ public class QnaController {
     @ResponseBody
     @GetMapping("/deleteNotification")
     public int deleteNotification(int notif_no){
-        int re=-1;
-        re=DBManager.deleteNotification(notif_no);
-        return re;
+        return DBManager.deleteNotification(notif_no);
     }
 
     // 답글 알림 뷰 (임시)

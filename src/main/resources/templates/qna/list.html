@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/css/ticket/homepage_frame.css"/>
     <link rel="stylesheet" type="text/css" href="/css/ticket/homepage_content.css"/>
     <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
     <script th:src="@{/js/loginLogout.js}"></script>
     <script th:src="@{/js/notice/list.js}"></script>
+    <script th:src="@{/js/qna/list.js}"></script>
     <script th:src="@{/js/ticket/CategoryNavSearch.js}"></script>
 </head>
 <body class="main_layout">
@@ -75,7 +75,7 @@
     <h2>Q&A</h2>
     <hr id="mypage_hr">
     <div id="btnWrite">
-        <a th:href="@{/qna/insert}">문의 작성</a>
+        <a th:href="@{/qna/insert}" id="a_write">문의 작성</a>
     </div>
     <table class="notice_table">
         <tr>
