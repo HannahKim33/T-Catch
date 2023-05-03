@@ -30,8 +30,10 @@ $(function(){
                             data:{qna_no: qna_no,
                                 insertOrUpdate: insertOrUpdate,
                                 custid: custid},
-                            success: function (){
-
+                            success: function (re){
+                                if(re==-1){
+                                    alert('삭제된 글입니다.')
+                                }
                             }
                         })
                     }

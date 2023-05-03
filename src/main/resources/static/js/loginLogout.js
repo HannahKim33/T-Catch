@@ -1,7 +1,7 @@
 $(function(){
     var custid = sessionStorage.getItem("custid");
 
-    if(custid != 'none' && custid!==null && custid=='' && custid!==undefined){
+    if(custid !== 'none' && custid!==null && custid!=='' && custid!==undefined){
         $("#login").css('display', 'none');
         $("#regist").css('display', 'none');
         $("#logout").css('display','inline-block');

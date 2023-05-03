@@ -140,13 +140,11 @@ public class QnaController {
     @GetMapping("/qna/insert")
     public ModelAndView insertForm(HttpSession session){
         ModelAndView mav=new ModelAndView();
-        
+
         // 세션에 저장된 아이디로 유저가 예매한 티켓 VO 목록 가져오기
-        String loginId=(String)session.getAttribute("id");
-        if(loginId==null){
-            mav.addObject("msg","로그인 먼저 해주세요.");
-            mav.setViewName("/error");
-        }else {
+        String loginId="";
+        try {
+            loginId = (String) session.getAttribute("id");
             List<Integer> ticketidList = DBManager.findTicketidByCustid(loginId);
             List<Ticket> ticketVOList = new ArrayList<>();
             for (int ticketid : ticketidList) {
@@ -156,6 +154,9 @@ public class QnaController {
                 }
             }
             mav.addObject("ticketVOList", ticketVOList);
+        }catch(Exception e){
+            mav.addObject("msg","로그인이 필요한 서비스입니다.");
+            mav.setViewName("/error");
         }
         return mav;
     }
