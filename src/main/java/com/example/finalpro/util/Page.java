@@ -1,6 +1,5 @@
 package com.example.finalpro.util;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
