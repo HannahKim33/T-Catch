@@ -27,10 +27,12 @@ public class BookSMSController {
         ticket_date=ticket_date.substring(0,16);
         String msg="[T-CATCH]\""+ticket_name+"\" 예약 완료. "+"예약번호: "+bookid+" ("
                 +ticket_date+" "+loc+")";
+
+        //SMS 보내기
         BitSms sms=new BitSms();
         sms.sendMsg("01025598279", phone, msg);
 
-        //email
+        //email 보내기
         String email_subject="[T-CATCH] 예약이 완료되었습니다";
         String msg_email="<h2>예약 확정</h2>"
                 +"<div>"+"예약번호: "+bookid+"</div>"

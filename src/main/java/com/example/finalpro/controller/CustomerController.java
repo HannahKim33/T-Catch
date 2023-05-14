@@ -94,7 +94,7 @@ public class CustomerController {
 
     //메인 로그인 정보 세션에 저장
     @GetMapping("/main")
-    public ModelAndView main(HttpSession session, Model m){
+    public ModelAndView main(HttpSession session, Model model){
         ModelAndView mav = new ModelAndView("/main");
         //인증된(로그인한) 회원의 정보를 가져오기 위하여
         //시큐리티의 인증객체가 필요.
@@ -115,10 +115,10 @@ public class CustomerController {
 
             session.setAttribute("id", id);
             System.out.println("session id = " + session.getAttribute("id"));
-            m.addAttribute("id", id);
+            model.addAttribute("id", id);
         }else{
             session.removeAttribute("id");
-            m.addAttribute("id","none");
+            model.addAttribute("id","none");
         }
         return mav;
     }

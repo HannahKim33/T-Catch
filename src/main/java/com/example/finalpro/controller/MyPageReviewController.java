@@ -80,15 +80,15 @@ public class MyPageReviewController {
     public ModelAndView updateForm(@PathVariable int reviewid){
         ModelAndView mav=new ModelAndView();
         Optional<MyPageReview> optionalMyPageReview=rs.findById(reviewid);
-        MyPageReview r=new MyPageReview();
+        MyPageReview r;
         if(optionalMyPageReview.isPresent()){
             r=optionalMyPageReview.get();
+            mav.addObject("r",r);
+            mav.setViewName("/myPage/updateReview");
         }else{
             mav.addObject("msg","존재하지 않는 리뷰입니다.");
             mav.setViewName("/error");
         }
-        mav.addObject("r",r);
-        mav.setViewName("/myPage/updateReview");
         return mav;
     }
 
@@ -110,6 +110,7 @@ public class MyPageReviewController {
             r=optionalMyPageReview.get();
         }else{
             mav.setViewName("/error");
+            mav.addObject("msg","존재하지 않는 리뷰입니다.");
         }
         rs.delete(r);
         return mav;

@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <meta name="viewport" content="user-scalable=yes, initial-scale=1">
 <link rel="stylesheet" type="text/css" href="/css/ticket/main.css">
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script th:src="@{/js/loginLogout.js}"></script>
 <script type="text/javascript">
 $(function(){
 	var width = $("[data-role='slider']").attr("data-width");
@@ -303,26 +304,26 @@ $(function(){
 	searchKeyword();
 	
 	// 로그인한 정보 불러오기
-	
-	var custid = sessionStorage.getItem("custid");
-	
-	if(custid != null){
-		$("#login").css('display', 'none');
-		$("#regist").css('display', 'none');
-		$("#logout").css('display','inline-block');
-		$("#mypage").css('display','inline-block');
-	}
-	
-	$("#logout").click(function(e){
-        if(confirm("로그아웃 하시겠습니까?")){
-	            $("#login").css('display', 'inline-block');
-	    		$("#regist").css('display', 'inline-block');
-	    		$("#logout").css('display','none');
-	    		$("#mypage").css('display','none');
-	    		sessionStorage.removeItem("custid");
-	    		e.preventDefault();		
-        }
-    })
+	//
+	// var custid = sessionStorage.getItem("custid");
+	//
+	// if(custid != null){
+	// 	$("#login").css('display', 'none');
+	// 	$("#regist").css('display', 'none');
+	// 	$("#logout").css('display','inline-block');
+	// 	$("#mypage").css('display','inline-block');
+	// }
+	//
+	// $("#logout").click(function(e){
+    //     if(confirm("로그아웃 하시겠습니까?")){
+	//             $("#login").css('display', 'inline-block');
+	//     		$("#regist").css('display', 'inline-block');
+	//     		$("#logout").css('display','none');
+	//     		$("#mypage").css('display','none');
+	//     		sessionStorage.removeItem("custid");
+	//     		e.preventDefault();
+    //     }
+    // })
 });
 </script>
 </head>
